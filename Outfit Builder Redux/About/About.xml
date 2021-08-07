@@ -7,5 +7,12 @@
   <supportedVersions>
     <li>1.3</li>
   </supportedVersions>
-  <description>Create new and unique outfits per pawn with the click of a button!</description>
+  <description>Easily create and update your pawn outfits with the click of a button.
+
+Usage: When you force a pawn to wear apparel, a new save button appears between Clr. forced and Edit.
+
+Left click: Create a new outfit policy with the name of the selected pawn, with only the currently worn apparel allowed. Forced wear is then released.
+
+Right click: Update current policy with forced items. All existing items remain allowed by the policy, even if they're not currently worn.
+</description>
 </ModMetaData>
