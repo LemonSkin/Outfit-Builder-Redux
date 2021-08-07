@@ -25,10 +25,10 @@ namespace LemonSkin.OBR
                 float num3 = rect.x;
                 bool somethingIsForced = pawn.outfits.forcedHandler.SomethingIsForced;
                 Rect rect2 = new Rect(num3, rect.y + 2f, (float)num, rect.height - 4f);
-                if (somethingIsForced)
-                {
-                    rect2.width -= 4f + (float)num2;
-                }
+                //if (somethingIsForced)
+                //{
+                rect2.width -= 4f + (float)num2;
+                //}
                 if (pawn.IsQuestLodger())
                 {
                     Text.Anchor = TextAnchor.MiddleCenter;
@@ -40,6 +40,7 @@ namespace LemonSkin.OBR
                 {
                     //private static readonly Func<Pawn, bool, int> ticksMoveSpeed = (Func<Pawn, bool, int>)Delegate.CreateDelegate(typeof(Func<Pawn, bool, int>), 
                     //AccessTools.Method(typeof(Pawn), "TicksPerMove"));
+
                     Widgets.Dropdown<Pawn, Outfit>(rect2,
                                                     pawn,
                                                     (Pawn p) => p.outfits.CurrentOutfit,
@@ -54,45 +55,56 @@ namespace LemonSkin.OBR
                 num3 += rect2.width;
                 num3 += 4f;
                 Rect rect3 = new Rect(num3, rect.y + 2f, (float)num2, rect.height - 4f);
-                if (somethingIsForced)
-                {
-                    if (Widgets.ButtonText(rect3, "ClearForcedApparel".Translate(), true, true, true))
-                    {
-                        pawn.outfits.forcedHandler.Reset();
-                    }
-                    if (Mouse.IsOver(rect3))
-                    {
-                        TooltipHandler.TipRegion(rect3, new TipSignal(delegate ()
-                        {
-                            string text = "ForcedApparel".Translate() + ":\n";
-                            foreach (Apparel apparel in pawn.outfits.forcedHandler.ForcedApparel)
-                            {
-                                text = text + "\n   " + apparel.LabelCap;
-                            }
-                            return text;
-                        }, pawn.GetHashCode() * 612));
-                    }
-                    num3 += (float)num2;
-                    num3 += 4f;
+                //if (somethingIsForced)
+                //{
 
-                    Rect save = new Rect(num3, rect.y + 2f, (float)(num2 / 2) - 4f, rect.height - 4f);
-                    if (Widgets.ButtonText(save, "OBR.Save".Translate(), true, true, true))
-                    {
-                        OutfitBuilderRedux.OutfitBuilderRedux_Do(pawn);
-                    }
-                    if (Mouse.IsOver(save))
-                    {
-                        TooltipHandler.TipRegion(save, new TipSignal(delegate ()
-                        {
-                            string text = "Save outfit";
-                            return text;
-                        }, pawn.GetHashCode() * 612));
-                    }
-                    num3 += save.width;
-                    num3 += 4f;
+                if (Widgets.ButtonText(rect3, "ClearForcedApparel".Translate(), true, true, true))
+                {
+                    pawn.outfits.forcedHandler.Reset();
                 }
 
-                Rect rect4 = new Rect(num3, rect.y + 2f, (float)(num2/2), rect.height - 4f);
+                if (Mouse.IsOver(rect3))
+                {
+                    TooltipHandler.TipRegion(rect3, new TipSignal(delegate ()
+                    {
+                        string text = "ForcedApparel".Translate() + ":\n";
+                        foreach (Apparel apparel in pawn.outfits.forcedHandler.ForcedApparel)
+                        {
+                            text = text + "\n   " + apparel.LabelCap;
+                        }
+                        return text;
+                    }, pawn.GetHashCode() * 612));
+                }
+                num3 += (float)num2;
+                num3 += 4f;
+
+                Rect save = new Rect(num3, rect.y + 2f, (float)(num2 / 2) - 4f, rect.height - 4f);
+
+                if (Widgets.ButtonText(save, "OBR.Save".Translate(), true, true, true))
+                {
+                    if(Event.current.button == 0)
+                    {
+                        OutfitBuilderRedux.OutfitBuilderRedux_Do(pawn, true);
+                    }
+                    else if(Event.current.button == 1)
+                    {
+                        OutfitBuilderRedux.OutfitBuilderRedux_Do(pawn, false);
+                    }
+                }
+
+                if (Mouse.IsOver(save))
+                {
+                    TooltipHandler.TipRegion(save, new TipSignal(delegate ()
+                    {
+                        string text = "Left click: Save outfit (overwrites)\nRight click: Update outfit";
+                        return text;
+                    }, pawn.GetHashCode() * 612));
+                }
+                num3 += save.width;
+                num3 += 4f;
+                //}
+
+                Rect rect4 = new Rect(num3, rect.y + 2f, (float)(num2 / 2), rect.height - 4f);
                 if (!pawn.IsQuestLodger() && Widgets.ButtonText(rect4, "OBR.AssignTabEdit".Translate(), true, true, true))
                 {
                     Find.WindowStack.Add(new Dialog_ManageOutfits(pawn.outfits.CurrentOutfit));

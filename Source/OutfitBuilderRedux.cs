@@ -11,7 +11,7 @@ namespace LemonSkin.OBR
             Log.Message("OBR Loaded!");
         }
 
-        public static void OutfitBuilderRedux_Do(Pawn pawn)
+        public static void OutfitBuilderRedux_Do(Pawn pawn, bool reset)
         {
 
             OutfitPolicyGameComponent component = Current.Game.GetComponent<OutfitPolicyGameComponent>();
@@ -23,8 +23,10 @@ namespace LemonSkin.OBR
                 outfitAssignedToPawn = component.CreateNewOutfit(pawn);
             }
 
-            outfitAssignedToPawn.filter.SetDisallowAll();
-
+            if (reset)
+            {
+                outfitAssignedToPawn.filter.SetDisallowAll();
+            }
 
             foreach (Apparel apparel in pawn.apparel.WornApparel)
             {
