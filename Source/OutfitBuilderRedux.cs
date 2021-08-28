@@ -11,7 +11,7 @@ namespace LemonSkin.OBR
             Log.Message("OBR Loaded!");
         }
 
-        public static void OutfitBuilderRedux_Do(Pawn pawn, bool reset)
+        public static void OutfitBuilderRedux_Do(Pawn pawn, bool overwrite)
         {
 
             OutfitPolicyGameComponent component = Current.Game.GetComponent<OutfitPolicyGameComponent>();
@@ -23,9 +23,15 @@ namespace LemonSkin.OBR
                 outfitAssignedToPawn = component.CreateNewOutfit(pawn);
             }
 
-            if (reset)
+            if (overwrite)
             {
                 outfitAssignedToPawn.filter.SetDisallowAll();
+            }else
+            {
+                if (pawn.outfits.CurrentOutfit.label != pawn.Name.ToStringShort.CapitalizeFirst())
+                {
+                    outfitAssignedToPawn.filter.CopyAllowancesFrom(pawn.outfits.CurrentOutfit.filter);
+                }
             }
 
             foreach (Apparel apparel in pawn.apparel.WornApparel)
