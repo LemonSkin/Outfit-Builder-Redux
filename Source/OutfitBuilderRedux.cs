@@ -8,7 +8,7 @@ namespace LemonSkin.OBR
     {
         static OutfitBuilderRedux()
         {
-            Log.Message("OBR Loaded!");
+            Log.Message("Outfit Builder Redux Loaded!");
         }
 
         public static void OutfitBuilderRedux_Do(Pawn pawn, bool overwrite)
