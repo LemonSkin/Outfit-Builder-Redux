@@ -16,7 +16,7 @@ namespace LemonSkin.OBR
 
             OutfitPolicyGameComponent component = Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
-            Outfit outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
+            ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
 
             if (outfitAssignedToPawn == null)
             {
@@ -28,9 +28,9 @@ namespace LemonSkin.OBR
                 outfitAssignedToPawn.filter.SetDisallowAll();
             }else
             {
-                if (pawn.outfits.CurrentOutfit.label != pawn.Name.ToStringShort.CapitalizeFirst())
+                if (pawn.outfits.CurrentApparelPolicy.label != pawn.Name.ToStringShort.CapitalizeFirst())
                 {
-                    outfitAssignedToPawn.filter.CopyAllowancesFrom(pawn.outfits.CurrentOutfit.filter);
+                    outfitAssignedToPawn.filter.CopyAllowancesFrom(pawn.outfits.CurrentApparelPolicy.filter);
                 }
             }
 
@@ -39,7 +39,7 @@ namespace LemonSkin.OBR
                 outfitAssignedToPawn.filter.SetAllow(apparel.def, true);
             }
 
-            pawn.outfits.CurrentOutfit = outfitAssignedToPawn;
+            pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
 
             pawn.outfits.forcedHandler.Reset();
         }

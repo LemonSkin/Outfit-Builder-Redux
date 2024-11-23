@@ -20,52 +20,49 @@ namespace LemonSkin.OBR
                 {
                     return true;
                 }
-                int num = Mathf.FloorToInt((rect.width - 4f) * 0.71428573f);
-                int num2 = Mathf.FloorToInt((rect.width - 4f) * 0.2857143f);
-                float num3 = rect.x;
+
+                float rect_x = rect.x;
+                float rect_y = rect.y + 2f;
+                float rect_width_long = Mathf.FloorToInt((rect.width * 0.5f) - 4f);
+                float rect_width_short = Mathf.FloorToInt((rect.width * 0.25f) - 4f);
+                float rect_height = rect.height - 4f;
+               
                 bool somethingIsForced = pawn.outfits.forcedHandler.SomethingIsForced;
-                Rect rect2 = new Rect(num3, rect.y + 2f, (float)num, rect.height - 4f);
-                //if (somethingIsForced)
-                //{
-                rect2.width -= 4f + (float)num2;
-                //}
+                Rect outfit_rect = new Rect(rect_x, rect_y, rect_width_long, rect_height);
+                
                 if (pawn.IsQuestLodger())
                 {
                     Text.Anchor = TextAnchor.MiddleCenter;
-                    Widgets.Label(rect2, "Unchangeable".Translate().Truncate(rect2.width, null));
-                    TooltipHandler.TipRegionByKey(rect2, "QuestRelated_Outfit");
+                    Widgets.Label(outfit_rect, "Unchangeable".Translate().Truncate(outfit_rect.width, null));
+                    TooltipHandler.TipRegionByKey(outfit_rect, "QuestRelated_Outfit");
                     Text.Anchor = TextAnchor.UpperLeft;
                 }
                 else
                 {
-                    //private static readonly Func<Pawn, bool, int> ticksMoveSpeed = (Func<Pawn, bool, int>)Delegate.CreateDelegate(typeof(Func<Pawn, bool, int>), 
-                    //AccessTools.Method(typeof(Pawn), "TicksPerMove"));
-
-                    Widgets.Dropdown<Pawn, Outfit>(rect2,
+                    Widgets.Dropdown<Pawn, ApparelPolicy>(outfit_rect,
                                                     pawn,
-                                                    (Pawn p) => p.outfits.CurrentOutfit,
-                                                    new Func<Pawn, IEnumerable<Widgets.DropdownMenuElement<Outfit>>>(__instance.Button_GenerateMenu),
-                                                    pawn.outfits.CurrentOutfit.label.Truncate(rect2.width, null),
+                                                    (Pawn p) => p.outfits.CurrentApparelPolicy,
+                                                    new Func<Pawn, IEnumerable<Widgets.DropdownMenuElement<ApparelPolicy>>>(__instance.Button_GenerateMenu),
+                                                    pawn.outfits.CurrentApparelPolicy.label.Truncate(outfit_rect.width, null),
                                                     null,
-                                                    pawn.outfits.CurrentOutfit.label,
+                                                    pawn.outfits.CurrentApparelPolicy.label,
                                                     null,
                                                     null,
                                                     true);
                 }
-                num3 += rect2.width;
-                num3 += 4f;
-                Rect rect3 = new Rect(num3, rect.y + 2f, (float)num2, rect.height - 4f);
-                //if (somethingIsForced)
-                //{
 
-                if (Widgets.ButtonText(rect3, "ClearForcedApparel".Translate(), true, true, true))
+                rect_x += outfit_rect.width + 4f;
+                Rect clear_forced_rect = new Rect(rect_x, rect_y, rect_width_short + 3f, rect_height);
+
+
+                if (Widgets.ButtonText(clear_forced_rect, "OBR.ClearForcedApparel".Translate().Truncate(clear_forced_rect.width), true, true, true))
                 {
                     pawn.outfits.forcedHandler.Reset();
                 }
 
-                if (Mouse.IsOver(rect3))
+                if (Mouse.IsOver(clear_forced_rect))
                 {
-                    TooltipHandler.TipRegion(rect3, new TipSignal(delegate ()
+                    TooltipHandler.TipRegion(clear_forced_rect, new TipSignal(delegate ()
                     {
                         string text = "ForcedApparel".Translate() + ":\n";
                         foreach (Apparel apparel in pawn.outfits.forcedHandler.ForcedApparel)
@@ -75,12 +72,11 @@ namespace LemonSkin.OBR
                         return text;
                     }, pawn.GetHashCode() * 612));
                 }
-                num3 += (float)num2;
-                num3 += 4f;
 
-                Rect save = new Rect(num3, rect.y + 2f, (float)(num2 / 2) - 4f, rect.height - 4f);
+                rect_x += clear_forced_rect.width + 4f;
+                Rect save_overwrite_rect = new Rect(rect_x, rect_y, rect_width_short + 2f, rect_height);
 
-                if (Widgets.ButtonText(save, "OBR.Save".Translate(), true, true, true))
+                if (Widgets.ButtonText(save_overwrite_rect, "OBR.Save".Translate().Truncate(save_overwrite_rect.width), true, true, true))
                 {
                     if(Event.current.button == 0)
                     {
@@ -92,24 +88,14 @@ namespace LemonSkin.OBR
                     }
                 }
 
-                if (Mouse.IsOver(save))
+                if (Mouse.IsOver(save_overwrite_rect))
                 {
-                    TooltipHandler.TipRegion(save, new TipSignal(delegate ()
+                    TooltipHandler.TipRegion(save_overwrite_rect, new TipSignal(delegate ()
                     {
                         string text = "Left click: Save outfit (overwrites)\nRight click: Update outfit";
                         return text;
                     }, pawn.GetHashCode() * 612));
                 }
-                num3 += save.width;
-                num3 += 4f;
-                //}
-
-                Rect rect4 = new Rect(num3, rect.y + 2f, (float)(num2 / 2), rect.height - 4f);
-                if (!pawn.IsQuestLodger() && Widgets.ButtonText(rect4, "OBR.AssignTabEdit".Translate(), true, true, true))
-                {
-                    Find.WindowStack.Add(new Dialog_ManageOutfits(pawn.outfits.CurrentOutfit));
-                }
-                num3 += (float)num2;
 
                 return false;
             }
@@ -119,54 +105,3 @@ namespace LemonSkin.OBR
     }
 
 }
-//class PawnColumnWorker_Outfit_Transpiler
-//{
-//    [HarmonyTranspiler]
-//    static IEnumerable<CodeInstruction> PawnColumnWorker_Outfit_Transpile(IEnumerable<CodeInstruction> instructions)
-//    {
-//        var code = new List<CodeInstruction>(instructions);
-
-//        int insertionIndex = -1;
-
-//        for (int i = 0; i < code.Count - 1; i++)
-//        {
-//            if (code[i].opcode == OpCodes.Brfalse_S && code[i + 1].opcode == OpCodes.Ldloca_S && code[i + 2].opcode == OpCodes.Dup)
-//            {
-//                insertionIndex = i + 10;
-//                break;
-//            }
-//        }
-//        //&& (int)code[i + 1].operand == 4
-
-//        var instructionsToInsert = new List<CodeInstruction>();
-
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloca_S, (byte)4));
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Dup));
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Rect), "get_width")));
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_R4, (float)2));
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Div));
-//        instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Rect), "set_width", new Type[] { typeof(float) })));
-
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_I4_0));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Text), "set_Font", new Type[] { typeof(GameFont) })));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_I4_7));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Text), "set_Anchor", new Type[] { typeof(TextAnchor) })));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_3));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_R4, (float)-8));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_R4, (float)165));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_R4, (float)10));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Newobj, AccessTools.Constructor(typeof(Rect), new Type[] { typeof(float), typeof(float), typeof(float), typeof(float) })));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldstr, "OBR.AssignButton"));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Translator), "Translate", new Type[] { typeof(string) })));
-//        //instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Widgets), "Label", new Type[] { typeof(Rect), typeof(TaggedString) })));
-
-//        if (insertionIndex != -1)
-//        {
-//            code.InsertRange(insertionIndex, instructionsToInsert);
-//        }
-
-
-//        return code;
-//    }
-
-//}

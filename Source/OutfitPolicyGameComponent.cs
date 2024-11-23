@@ -24,7 +24,7 @@ namespace LemonSkin.OBR
             }
         }
 
-        public Outfit OutfitAssignedToPawn(Pawn pawn)
+        public ApparelPolicy OutfitAssignedToPawn(Pawn pawn)
         {
             if (storedOutfits == null)
             {
@@ -33,18 +33,18 @@ namespace LemonSkin.OBR
 
             if (storedOutfits.ContainsKey(pawn))
             {
-                return Current.Game.outfitDatabase.AllOutfits.Find(s => s.uniqueId == storedOutfits[pawn]);
+                return Current.Game.outfitDatabase.AllOutfits.Find(s => s.id == storedOutfits[pawn]);
             }
 
             return null;
         }
 
-        public Outfit CreateNewOutfit(Pawn pawn)
+        public ApparelPolicy CreateNewOutfit(Pawn pawn)
         {
-            Outfit newOutfit = Current.Game.outfitDatabase.MakeNewOutfit();
+            ApparelPolicy newOutfit = Current.Game.outfitDatabase.MakeNewOutfit();
             newOutfit.label = pawn.Name.ToStringShort.CapitalizeFirst();
 
-            storedOutfits.Add(pawn, newOutfit.uniqueId);
+            storedOutfits.Add(pawn, newOutfit.id);
 
             return newOutfit;
         }
