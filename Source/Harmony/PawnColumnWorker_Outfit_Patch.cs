@@ -76,15 +76,15 @@ namespace LemonSkin.OBR
                 rect_x += clear_forced_rect.width + 4f;
                 Rect save_overwrite_rect = new Rect(rect_x, rect_y, rect_width_short + 2f, rect_height);
 
-                if (Widgets.ButtonText(save_overwrite_rect, "OBR.Save".Translate().Truncate(save_overwrite_rect.width), true, true, true))
+                if (Widgets.ButtonText(save_overwrite_rect, "OBR.Save".Translate().Truncate(save_overwrite_rect.width).Resolve(), true, true, true))
                 {
                     if(Event.current.button == 0)
                     {
-                        OutfitBuilderRedux.OutfitBuilderRedux_Do(pawn, true);
+                        OutfitBuilderRedux.OutfitBuilderRedux_CreateNewOutfit(pawn);
                     }
                     else if(Event.current.button == 1)
                     {
-                        OutfitBuilderRedux.OutfitBuilderRedux_Do(pawn, false);
+                        OutfitBuilderRedux.OutfitBuilderRedux_UpdateOutfit(pawn);
                     }
                 }
 
