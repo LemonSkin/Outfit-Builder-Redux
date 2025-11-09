@@ -1,4 +1,6 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 using Verse;
 
 namespace LemonSkin.OBR
@@ -13,7 +15,8 @@ namespace LemonSkin.OBR
 
         public static void OutfitBuilderRedux_CreateNewOutfit(Pawn pawn)
         {
-            OutfitPolicyGameComponent component = Current.Game.GetComponent<OutfitPolicyGameComponent>();
+            OutfitPolicyGameComponent component =
+                Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
             ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
             if (outfitAssignedToPawn.label != pawn.Name.ToStringShort.CapitalizeFirst())
@@ -21,15 +24,39 @@ namespace LemonSkin.OBR
                 outfitAssignedToPawn = component.CreateNewOutfit(pawn);
             }
 
-            outfitAssignedToPawn.filter.SetDisallowAll();
-            outfitAssignedToPawn.filter.allowedHitPointsPercents = pawn.outfits.CurrentApparelPolicy.filter.allowedHitPointsPercents;
-            outfitAssignedToPawn.filter.allowedQualities = pawn.outfits.CurrentApparelPolicy.filter.allowedQualities;
-            outfitAssignedToPawn.filter.disallowedSpecialFilters = pawn.outfits.CurrentApparelPolicy.filter.disallowedSpecialFilters;
+            IEnumerable<ThingDef> apparelDefs = pawn.apparel.WornApparel.Select(apparel =>
+                apparel.def
+            );
 
-            foreach (Apparel apparel in pawn.apparel.WornApparel)
+            string[] specialThingFilterNames =
+            [
+                "AllowSmeltableApparel",
+                "AllowNonSmeltableApparel",
+                "AllowBurnableApparel",
+                "AllowNonBurnableApparel",
+                "AllowBiocodedApparel",
+                "AllowNonBiocodedApparel",
+                "AllowDeadmansApparel",
+            ];
+
+            Dictionary<SpecialThingFilterDef, bool> specialFilterStates = specialThingFilterNames
+                .Select(filterName => SpecialThingFilterDef.Named(filterName))
+                .ToDictionary(filterDef => filterDef, filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef));
+
+            outfitAssignedToPawn.filter.SetDisallowAll(apparelDefs);
+            foreach (var i in specialFilterStates)
             {
-                outfitAssignedToPawn.filter.SetAllow(apparel.def, true);
+                outfitAssignedToPawn.filter.SetAllow(i.Key, i.Value);
             }
+
+            outfitAssignedToPawn.filter.AllowedHitPointsPercents = pawn.outfits
+                .CurrentApparelPolicy
+                .filter
+                .AllowedHitPointsPercents;
+            outfitAssignedToPawn.filter.AllowedQualityLevels = pawn.outfits
+                .CurrentApparelPolicy
+                .filter
+                .AllowedQualityLevels;
 
             pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
             pawn.outfits.forcedHandler.Reset();
@@ -37,7 +64,8 @@ namespace LemonSkin.OBR
 
         public static void OutfitBuilderRedux_UpdateOutfit(Pawn pawn)
         {
-            OutfitPolicyGameComponent component = Current.Game.GetComponent<OutfitPolicyGameComponent>();
+            OutfitPolicyGameComponent component =
+                Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
             ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
 

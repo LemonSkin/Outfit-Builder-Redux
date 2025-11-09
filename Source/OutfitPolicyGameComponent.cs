@@ -6,13 +6,11 @@ namespace LemonSkin.OBR
 {
     public class OutfitPolicyGameComponent : GameComponent
     {
-        public OutfitPolicyGameComponent(Game game)
-        {
-        }
+        public OutfitPolicyGameComponent(Game game) { }
 
         public ApparelPolicy OutfitAssignedToPawn(Pawn pawn)
         {
-            return pawn.outfits.curApparelPolicy;
+            return pawn.outfits.CurrentApparelPolicy;
         }
 
         public ApparelPolicy CreateNewOutfit(Pawn pawn)
