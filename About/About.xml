@@ -12,11 +12,17 @@
   </supportedVersions>
   <description>Easily create and update your pawn outfits with the click of a button.
 
-Usage: When you force a pawn to wear apparel, a new save button appears between Clr. forced and Edit.
+When you force wear clothing, you can now right click on the Clear Forced button to bring up a context menu.
 
-Left click: Create a new outfit policy with the name of the selected pawn, with only the currently worn apparel allowed. Forced wear is then released.
+Save Outfit: Create or overwrite an outfit policy sharing the name of the pawn. Only currently equipped items will be set to allow. All special filters (tainted, biocoded, etc), as well as quality and hit-point thresholds will be inherited from the currently selected policy. Forced wear is then released.
 
-Right click: Update current policy with forced items. All existing items remain allowed by the policy, even if they're not currently worn.
+Save As: WIP/Not Implemented - Bring up a dialogue box to allow user to enter a name. If policy with that name exists, it will be overwritten following the inheritance rules as above.
+
+Update Outfit: Update the current policy to allow all equipped items on the pawn. Does not disallow anything, all special filters and thresholds will remain. Forced wear is then released.
+
+Clear Forced Apparel: Same as left clicking the button.
+
+Credit to the original authors Hoedull, and Dizzy Ioeuy for the 1.3 and 1.4 updates.
 </description>
   <modDependencies>
     <li>

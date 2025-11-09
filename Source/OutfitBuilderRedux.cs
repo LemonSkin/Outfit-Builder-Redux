@@ -21,12 +21,8 @@ namespace LemonSkin.OBR
             ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
             if (outfitAssignedToPawn.label != pawn.Name.ToStringShort.CapitalizeFirst())
             {
-                outfitAssignedToPawn = component.CreateNewOutfit(pawn);
+                outfitAssignedToPawn = component.CreateOutfit(pawn);
             }
-
-            IEnumerable<ThingDef> apparelDefs = pawn.apparel.WornApparel.Select(apparel =>
-                apparel.def
-            );
 
             string[] specialThingFilterNames =
             [
@@ -43,7 +39,7 @@ namespace LemonSkin.OBR
                 .Select(filterName => SpecialThingFilterDef.Named(filterName))
                 .ToDictionary(filterDef => filterDef, filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef));
 
-            outfitAssignedToPawn.filter.SetDisallowAll(apparelDefs);
+            outfitAssignedToPawn.filter.SetDisallowAll();
             foreach (var i in specialFilterStates)
             {
                 outfitAssignedToPawn.filter.SetAllow(i.Key, i.Value);
@@ -57,6 +53,11 @@ namespace LemonSkin.OBR
                 .CurrentApparelPolicy
                 .filter
                 .AllowedQualityLevels;
+
+            foreach (Apparel apparel in pawn.apparel.WornApparel)
+            {
+                outfitAssignedToPawn.filter.SetAllow(apparel.def, true);
+            }
 
             pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
             pawn.outfits.forcedHandler.Reset();
