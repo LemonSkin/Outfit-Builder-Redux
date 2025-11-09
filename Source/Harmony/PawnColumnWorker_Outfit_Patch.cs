@@ -71,6 +71,20 @@ namespace LemonSkin.OBR
                             OutfitBuilderRedux.OutfitBuilderRedux_CreateNewOutfit(pawn);
                         }
                     ),
+
+                    //new FloatMenuOption(
+                    //    "Save Outfit As...",
+                    //    delegate {
+                    //        Find.WindowStack.Add(new Dialog_GiveName(
+                    //            pawn.Name.ToStringShort, 
+                    //            delegate(string newName)
+                    //            {
+                    //            OutfitBuilderRedux.OutfitBuilderRedux_SaveOutfitAs(pawn, newName);
+                    //            }
+                    //        ));
+                    //    }
+                    //),
+
                     new FloatMenuOption(
                         "Update Outfit",
                         delegate

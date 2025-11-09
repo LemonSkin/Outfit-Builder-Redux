@@ -13,7 +13,7 @@ namespace LemonSkin.OBR
             return pawn.outfits.CurrentApparelPolicy;
         }
 
-        public ApparelPolicy CreateOutfit(Pawn pawn)
+        public ApparelPolicy GetOutfit(Pawn pawn)
         {
             List<ApparelPolicy> outfits = Current.Game.outfitDatabase.AllOutfits;
             foreach (ApparelPolicy outfit in outfits)

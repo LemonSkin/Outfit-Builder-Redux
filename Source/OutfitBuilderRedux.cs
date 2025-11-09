@@ -19,9 +19,10 @@ namespace LemonSkin.OBR
                 Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
             ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
-            if (outfitAssignedToPawn.label != pawn.Name.ToStringShort.CapitalizeFirst())
+            ApparelPolicy outfit = pawn.outfits.CurrentApparelPolicy;
+            if (outfit.label != pawn.Name.ToStringShort.CapitalizeFirst())
             {
-                outfitAssignedToPawn = component.CreateOutfit(pawn);
+                outfit = component.GetOutfit(pawn);
             }
 
             string[] specialThingFilterNames =
@@ -61,6 +62,11 @@ namespace LemonSkin.OBR
 
             pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
             pawn.outfits.forcedHandler.Reset();
+        }
+
+        public static void OutfitBuilderRedux_SaveOutfitAs(Pawn pawn, string name)
+        { 
+            Log.Message(name);
         }
 
         public static void OutfitBuilderRedux_UpdateOutfit(Pawn pawn)
