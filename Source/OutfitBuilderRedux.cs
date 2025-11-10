@@ -13,7 +13,7 @@ namespace LemonSkin.OBR
             Log.Message("Outfit Builder Redux Loaded!");
         }
 
-        public static void OutfitBuilderRedux_CreateNewOutfit(Pawn pawn)
+        public static void OutfitBuilderRedux_SaveOutfit(Pawn pawn)
         {
             OutfitPolicyGameComponent component =
                 Current.Game.GetComponent<OutfitPolicyGameComponent>();
@@ -21,7 +21,7 @@ namespace LemonSkin.OBR
             ApparelPolicy outfit = pawn.outfits.CurrentApparelPolicy;
             if (outfit.label != pawn.Name.ToStringShort.CapitalizeFirst())
             {
-                outfit = component.GetOutfit(pawn);
+                outfit = component.GetOrMakeNewOutfit(pawn);
             }
 
             string[] specialThingFilterNames =
@@ -38,8 +38,11 @@ namespace LemonSkin.OBR
 
             Dictionary<SpecialThingFilterDef, bool> specialFilterStates = specialThingFilterNames
                 .Select(filterName => SpecialThingFilterDef.Named(filterName))
-                .ToDictionary(filterDef => filterDef, filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef));
-            
+                .ToDictionary(
+                    filterDef => filterDef,
+                    filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef)
+                );
+
             FloatRange allowedHitPointsPercets = pawn.outfits
                 .CurrentApparelPolicy
                 .filter

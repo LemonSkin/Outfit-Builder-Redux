@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-
-	<OBR.Save>Save</OBR.Save>
-	<OBR.AssignTabEdit>Edit</OBR.AssignTabEdit>
-	<OBR.ClearForcedApparel>Clear</OBR.ClearForcedApparel>
-
+  <OBR.SaveOutfit>Save Outfit</OBR.SaveOutfit>
+  <OBR.SaveOutfitAs>Save Outfit As</OBR.SaveOutfitAs>
+  <OBR.UpdateOutfit>Update Outfit</OBR.UpdateOutfit>
 </LanguageData>

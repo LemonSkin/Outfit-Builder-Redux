@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -60,20 +59,24 @@ namespace LemonSkin.OBR
                 return true;
             }
 
-            if (Mouse.IsOver(right) && Event.current.type == EventType.MouseDown && Event.current.button == 1)
+            if (
+                Mouse.IsOver(right)
+                && Event.current.type == EventType.MouseDown
+                && Event.current.button == 1
+            )
             {
                 List<FloatMenuOption> options =
                 [
                     new FloatMenuOption(
-                        "Save Outfit",
+                        "OBR.SaveOutfit".Translate(),
                         delegate
                         {
-                            OutfitBuilderRedux.OutfitBuilderRedux_CreateNewOutfit(pawn);
+                            OutfitBuilderRedux.OutfitBuilderRedux_SaveOutfit(pawn);
                         }
                     ),
 
                     //new FloatMenuOption(
-                    //    "Save Outfit As...",
+                    //    "OBR.SaveOutfitAs".Translate(),
                     //    delegate {
                     //        Find.WindowStack.Add(new Dialog_GiveName(
                     //            pawn.Name.ToStringShort, 
@@ -86,14 +89,14 @@ namespace LemonSkin.OBR
                     //),
 
                     new FloatMenuOption(
-                        "Update Outfit",
+                        "OBR.UpdateOutfit".Translate(),
                         delegate
                         {
                             OutfitBuilderRedux.OutfitBuilderRedux_UpdateOutfit(pawn);
                         }
                     ),
                     new FloatMenuOption(
-                        "Clear Forced Apparel",
+                        "ClearForcedApparel".Translate(),
                         delegate
                         {
                             pawn.outfits.forcedHandler.Reset();

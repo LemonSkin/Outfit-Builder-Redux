@@ -6,25 +6,26 @@ namespace LemonSkin.OBR
 {
     public class OutfitPolicyGameComponent(Game game) : GameComponent
     {
-
         //public ApparelPolicy OutfitAssignedToPawn(Pawn pawn)
         //{
         //    return pawn.outfits.CurrentApparelPolicy;
         //}
 
-        public ApparelPolicy GetOutfit(Pawn pawn)
+        public ApparelPolicy GetOrMakeNewOutfit(Pawn pawn)
         {
-            List<ApparelPolicy> outfits = Current.Game.outfitDatabase.AllOutfits;
-            foreach (ApparelPolicy outfit in outfits)
+            string pawnName = pawn.Name.ToStringShort.CapitalizeFirst();
+
+            ApparelPolicy existingOutfit = game.outfitDatabase.AllOutfits.FirstOrDefault(outfit =>
+                outfit.label == pawnName
+            );
+
+            if (existingOutfit != null)
             {
-                if (outfit.label == pawn.Name.ToStringShort.CapitalizeFirst())
-                {
-                    return outfit;
-                }
+                return existingOutfit;
             }
 
-            ApparelPolicy newOutfit = Current.Game.outfitDatabase.MakeNewOutfit();
-            newOutfit.label = pawn.Name.ToStringShort.CapitalizeFirst();
+            ApparelPolicy newOutfit = game.outfitDatabase.MakeNewOutfit();
+            newOutfit.label = pawnName;
             return newOutfit;
         }
     }

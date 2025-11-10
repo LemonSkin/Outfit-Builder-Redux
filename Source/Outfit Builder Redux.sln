@@ -7,14 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Outfit Builder Redux", "Out
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		1.6|Any CPU = 1.6|Any CPU
 		Current|Any CPU = Current|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{41982906-EF2D-4213-8387-1ECB78D520E6}.1.6|Any CPU.ActiveCfg = 1.6|Any CPU
-		{41982906-EF2D-4213-8387-1ECB78D520E6}.1.6|Any CPU.Build.0 = 1.6|Any CPU
 		{41982906-EF2D-4213-8387-1ECB78D520E6}.Current|Any CPU.ActiveCfg = Current|Any CPU
 		{41982906-EF2D-4213-8387-1ECB78D520E6}.Current|Any CPU.Build.0 = Current|Any CPU
 		{41982906-EF2D-4213-8387-1ECB78D520E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
