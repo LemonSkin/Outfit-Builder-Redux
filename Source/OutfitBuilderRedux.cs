@@ -18,7 +18,6 @@ namespace LemonSkin.OBR
             OutfitPolicyGameComponent component =
                 Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
-            ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
             ApparelPolicy outfit = pawn.outfits.CurrentApparelPolicy;
             if (outfit.label != pawn.Name.ToStringShort.CapitalizeFirst())
             {
@@ -34,38 +33,77 @@ namespace LemonSkin.OBR
                 "AllowBiocodedApparel",
                 "AllowNonBiocodedApparel",
                 "AllowDeadmansApparel",
+                "AllowNonDeadmansApparel",
             ];
 
             Dictionary<SpecialThingFilterDef, bool> specialFilterStates = specialThingFilterNames
                 .Select(filterName => SpecialThingFilterDef.Named(filterName))
                 .ToDictionary(filterDef => filterDef, filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef));
-
-            outfitAssignedToPawn.filter.SetDisallowAll();
-            foreach (var i in specialFilterStates)
-            {
-                outfitAssignedToPawn.filter.SetAllow(i.Key, i.Value);
-            }
-
-            outfitAssignedToPawn.filter.AllowedHitPointsPercents = pawn.outfits
+            
+            FloatRange allowedHitPointsPercets = pawn.outfits
                 .CurrentApparelPolicy
                 .filter
                 .AllowedHitPointsPercents;
-            outfitAssignedToPawn.filter.AllowedQualityLevels = pawn.outfits
+            QualityRange allowedQualityLevels = pawn.outfits
                 .CurrentApparelPolicy
                 .filter
                 .AllowedQualityLevels;
 
-            foreach (Apparel apparel in pawn.apparel.WornApparel)
+            outfit.filter.SetDisallowAll();
+            foreach (var i in specialFilterStates)
             {
-                outfitAssignedToPawn.filter.SetAllow(apparel.def, true);
+                outfit.filter.SetAllow(i.Key, i.Value);
             }
 
-            pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
+            outfit.filter.AllowedHitPointsPercents = allowedHitPointsPercets;
+            outfit.filter.AllowedQualityLevels = allowedQualityLevels;
+
+            foreach (Apparel apparel in pawn.apparel.WornApparel)
+            {
+                outfit.filter.SetAllow(apparel.def, true);
+            }
+
+            //IEnumerable<ThingDef> apparelDefs = pawn.apparel.WornApparel.Select(apparel =>
+            //    apparel.def
+            //);
+
+            //string[] specialThingFilterNames =
+            //[
+            //    "AllowSmeltableApparel",
+            //    "AllowNonSmeltableApparel",
+            //    "AllowBurnableApparel",
+            //    "AllowNonBurnableApparel",
+            //    "AllowBiocodedApparel",
+            //    "AllowNonBiocodedApparel",
+            //    "AllowDeadmansApparel",
+            //    "AllowNonDeadmansApparel",
+            //];
+
+            //IEnumerable<SpecialThingFilterDef> specialThingFilterDefs = specialThingFilterNames
+            //    .Select(filterName => SpecialThingFilterDef.Named(filterName))
+            //    .Where(filterDef => pawn.outfits.CurrentApparelPolicy.filter.Allows(filterDef));
+            //foreach (SpecialThingFilterDef filterDef in specialThingFilterDefs)
+            //{
+            //    Log.Message(filterDef.label + ": ");
+            //}
+
+            //outfit.filter.SetDisallowAll(apparelDefs, specialThingFilterDefs);
+
+            //outfit.filter.AllowedHitPointsPercents = pawn.outfits
+            //    .CurrentApparelPolicy
+            //    .filter
+            //    .AllowedHitPointsPercents;
+            //outfit.filter.AllowedQualityLevels = pawn.outfits
+            //    .CurrentApparelPolicy
+            //    .filter
+            //    .AllowedQualityLevels;
+
+            pawn.outfits.CurrentApparelPolicy = outfit;
             pawn.outfits.forcedHandler.Reset();
         }
 
         public static void OutfitBuilderRedux_SaveOutfitAs(Pawn pawn, string name)
-        { 
+        {
             Log.Message(name);
         }
 
@@ -74,13 +112,14 @@ namespace LemonSkin.OBR
             OutfitPolicyGameComponent component =
                 Current.Game.GetComponent<OutfitPolicyGameComponent>();
 
-            ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
+            //ApparelPolicy outfitAssignedToPawn = component.OutfitAssignedToPawn(pawn);
+            ApparelPolicy outfit = pawn.outfits.CurrentApparelPolicy;
 
             foreach (Apparel apparel in pawn.apparel.WornApparel)
             {
-                outfitAssignedToPawn.filter.SetAllow(apparel.def, true);
+                outfit.filter.SetAllow(apparel.def, true);
             }
-            pawn.outfits.CurrentApparelPolicy = outfitAssignedToPawn;
+            pawn.outfits.CurrentApparelPolicy = outfit;
             pawn.outfits.forcedHandler.Reset();
         }
     }

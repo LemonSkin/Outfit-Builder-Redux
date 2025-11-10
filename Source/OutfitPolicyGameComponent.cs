@@ -4,14 +4,13 @@ using Verse;
 
 namespace LemonSkin.OBR
 {
-    public class OutfitPolicyGameComponent : GameComponent
+    public class OutfitPolicyGameComponent(Game game) : GameComponent
     {
-        public OutfitPolicyGameComponent(Game game) { }
 
-        public ApparelPolicy OutfitAssignedToPawn(Pawn pawn)
-        {
-            return pawn.outfits.CurrentApparelPolicy;
-        }
+        //public ApparelPolicy OutfitAssignedToPawn(Pawn pawn)
+        //{
+        //    return pawn.outfits.CurrentApparelPolicy;
+        //}
 
         public ApparelPolicy GetOutfit(Pawn pawn)
         {
